@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Text Summarisation</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-r navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="https://idsil.com/index.php">
+            <div class="logo-image">
+              <img src="https://idsil.com/images/IDS-logo.gif" class="img-fluid">
+  
+            </div>
+            
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="">Text Summarisation</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+              </li>
+              
+            </ul>
+  
+          </div>
+          
+              
+            </div>
+  
+          </div>
+        </div>
+      </nav>
+
+
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 ">
+            <form method = 'POST' action="{% url 'tool'%}">
+              {% csrf_token %}
+
+              <div class=" col-md  mb-3 text-center text-primary" style="font-size:20px; ;">
+                <label for="exampleFormControlTextarea1" class="form-level">Text summarisation</label>
+                <textarea name="description" value="oldDescription" class="form-control " id="exampleFormControlTextarea1" rows="12">{{oldDescription}}</textarea>
+              </div>
+            
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-2"></div>
+
+
+              <div class="col-8 ">
+                <div class="row">
+                  <div class="col-2 "></div>
+                  <div class="col-8 ">
+
+                    <label for="exampleFormControlInput1" class="form-label text-primary">Keyword Search</label>
+                    <label for="exampleFormControlInput1" class="form-label ">{{Keywords}}</label>
+                    <input type="text" name="keywords" class="form-control" id="exampleFormControlInput1" placeholder="keywords">
+
+                   
+
+                  </div>  
+
+                  <div class="col-2 "></div>
+                </div>
+              </div>
+
+
+          <div class="col-2 "></div>
+
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-3"></div>
+
+          <!-- ... Other form elements ... -->
+          <div class="col-6 mt-2 text-center">
+            <label for="summary-length" class="form-label">Select Summary Length:</label>
+            <select id="summary-length" name="summary_length" class="form-control">
+                <option value="full" {% if selected_summary_length == "full" %}selected{% endif %}>Full Summary</option>
+                <option value="one_third" {% if selected_summary_length == "one_third" %}selected{% endif %}>One Third Summary</option>
+                <option value="two_thirds" {% if selected_summary_length == "two_thirds" %}selected{% endif %}>Two Thirds Summary</option>
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Summarise Now</button>
+        </div>
+        
+<!-- ... Rest of the template ... -->
+<div class="col-3"></div>
+      </div>
+      </form>
+      {% if top_keywords %}
+        <div class="row">
+          <div class="col-4"></div>
+            <div class="col-8">
+                <h2>Top Keywords:</h2>
+                <ul>
+                    {% for word, count in top_keywords %}
+                        <li>{{ word }}: {{ count }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+  {% endif %}
+      {% if show_statistics %}
+      <div class="row mt-2">
+        <div class="col-1  "></div>
+
+
+            <div class="col-4 ">
+
+              <div id="accordion">
+                <div class="card mt-2">
+                  <div class="card-header  bg-primary " id="headingOne" style="height: 3rem;">
+                    <h4  class=" bg-primary text-white" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      Original Statistics
+                          <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrows-expand " viewBox="0 0 20 20" style="display: inline-block; margin-left: 45%; color:aliceblue">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z"/>
+                          </svg>
+                    </h4>
+                  </div>
+              
+                  <div id="collapseOne" class="collapse show " aria-labelledby="headingOne" data-parent="#accordion">
+                    
+                      <table class="table table-bordered table-hover">
+                        <tbody>
+                          <tr>
+                            <th>Statistic</th>
+                            <th>Value</th>
+                          </tr>
+                          <tr>
+                            <td>Number of paragraphs:</td>
+                            <td>{{count}}</td>
+                          </tr>
+                          <tr>
+                            <td>Number of sentences:</td>
+                            <td>{{lines}}</td>
+                          </tr>
+                          <tr>
+                            <td>Number of pages:</td>
+                            <td>{{pages}}</td>
+                          </tr>
+                          <tr>
+                            <td>Character count:</td>
+                            <td>{{char_count}}</td>
+                          </tr>
+                          <tr>
+                            <td>Character count (including spaces):</td>
+                            <td>{{char_count_one}}</td>
+                          </tr>
+                          <tr>
+                            <td>Word count:</td>
+                            <td>{{word_count}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      
+                    
+                    
+                  </div>
+                </div>
+                
+              
+            </div>
+
+
+
+      
+
+      </div>
+      <div class="col-6 "> 
+              
+        
+          
+          
+      </div>
+
+      
+
+      {% endif %}
+  
+</div>
+
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-1">
+
+    </div>
+
+    {%if show_statistics%}
+    <div class="col-10 text-center mt-5 ">
+
+      <label for="summaryText" class="form-label text-primary" style="font-size: 20px;">Summary Text</label>
+          <textarea class="form-control "  id="summaryText" rows="12">{{ Summary }}</textarea>
+      
+    </div>
+
+    <div class="col-1">
+
+    </div>
+      
+  </div>
+
+  <div class="row">
+    <div class="col-1">
+
+    </div>
+
+    <div class="col-4 mt-5">
+
+      <div id="accordion">
+        <div class="card ">
+          <div class="card-header  bg-primary " id="headingOne" style="height: 3rem;">
+            <h4  class=" bg-primary text-white" data-toggle="collapse" data-target="#collapsetwo" aria-expanded="true" aria-controls="collapseOne">
+              Summary Statistics
+                  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-arrows-expand " viewBox="0 0 20 20" style="display: inline-block; margin-left: 40%; color:aliceblue">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8ZM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2ZM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10Z"/>
+                  </svg>
+            </h4>
+          </div>
+      
+          <div id="collapsetwo" class="collapse show " aria-labelledby="headingOne" data-parent="#accordion">
+            
+              <table class="table table-bordered table-hover">
+                <tbody>
+                  <tr>
+                    <th>Summary Statistic</th>
+                    <th>Value</th>
+                  </tr>
+                  <tr>
+                    <td>Number of paragraphs:</td>
+                    <td>{{summary_count}}</td>
+                  </tr>
+                  
+                  <tr>
+                    <td>Number of pages:</td>
+                    <td>{{summary_pages}}</td>
+                  </tr>
+                  <tr>
+                    <td>Character count:</td>
+                    <td>{{summary_char_count}}</td>
+                  </tr>
+                  <tr>
+                    <td>Character count (including spaces):</td>
+                    <td>{{summary_char_count_one}}</td>
+                  </tr>
+                  <tr>
+                    <td>Word count:</td>
+                    <td>{{summary_word_count}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+            
+            
+          </div>
+        </div>
+
+    </div>
+
+    <div class="col-7">
+
+    </div>
+      
+  </div>
+  {% endif %}
+
+
+</div>
+
+<div class="row">
+
+  <div class="col-12" style="height: 20px;">
+
+  </div>
+
+</div>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
